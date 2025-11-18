@@ -150,7 +150,7 @@ export default function Register() {
                 w-full h-full">
 
           <img
-            src="/src/assets/nino3.jpg"
+            src="/src/assets/coheteee.webp"
             className="w-full max-w-[420px] object-contain drop-shadow-lg"
           />
         </div>
