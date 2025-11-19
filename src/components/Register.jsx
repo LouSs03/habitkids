@@ -143,7 +143,6 @@ export default function Register() {
         </div>
 
         {/* ------------------ COLUMNA DERECHA ------------------ */}
-        {/* ------------------ COLUMNA DERECHA ------------------ */}
         <div className="bg-yellow-300 flex justify-center items-center p-10 
                 relative min-h-[350px] 
                 lg:min-h-full 

@@ -1,15 +1,40 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function Login() {
-  const [tipo, setTipo] = useState("padre"); // padre o niño
+  const navigate = useNavigate();
+  const [tipo, setTipo] = useState("padre"); 
+  const [emailOrName, setEmailOrName] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleLogin = (e) => {
+    e.preventDefault();
+
+    if (!emailOrName || !password) {
+      alert("Por favor completa todos los campos.");
+      return;
+    }
+
+    if (tipo === "padre") {
+      // Guardar nombre del padre para mostrarlo en el dashboard
+      localStorage.setItem("parentName", emailOrName);
+
+      navigate("/parent/dashboard");
+    } else {
+      // login del niño
+      localStorage.setItem("childName", emailOrName);
+
+      navigate("/child/dashboard");
+    }
+  };
 
   return (
     <div className="relative min-h-screen bg-gray-100 px-4">
 
-      {/* BOTÓN VOLVER */}
+      {/* BOTÓN VOLVER — Mejorado */}
       <button
-        onClick={() => window.location.href = "/"}
-        className="absolute z-50 top-28 left-6 flex items-center gap-2 bg-white text-gray-700 
+        onClick={() => navigate("/")}
+        className="absolute z-50 top-8 left-6 flex items-center gap-2 bg-white text-gray-700 
           px-4 py-2 rounded-full shadow-md hover:shadow-lg hover:bg-gray-50 transition-all duration-200"
       >
         <span className="text-lg">←</span>
@@ -17,11 +42,10 @@ export default function Login() {
       </button>
 
       {/* CONTENEDOR CENTRAL */}
-    
-      <div className="flex flex-col items-center justify-center py-10">
+      <div className="flex flex-col items-center justify-center py-16">
 
         {/* LOGO */}
-        <div className="flex items-center gap-2 mb-6 mt-6">
+        <div className="flex items-center gap-2 mb-8 mt-6">
           <div className="w-12 h-12 bg-yellow-400 rounded-full flex items-center justify-center overflow-hidden">
             <img
               src="/src/assets/caritafeliz.png"
@@ -76,7 +100,7 @@ export default function Login() {
           </p>
 
           {/* FORMULARIO */}
-          <form className="mt-4 space-y-5">
+          <form className="mt-4 space-y-5" onSubmit={handleLogin}>
 
             {/* EMAIL / NOMBRE */}
             <div className="text-left">
@@ -91,8 +115,10 @@ export default function Login() {
                     ? "Introduce tu correo electrónico"
                     : "Introduce tu nombre"
                 }
+                value={emailOrName}
+                onChange={(e) => setEmailOrName(e.target.value)}
                 className="mt-1 w-full px-4 py-3 rounded-xl border border-gray-300 bg-white text-black 
-                  focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                focus:outline-none focus:ring-2 focus:ring-yellow-400"
               />
             </div>
 
@@ -105,8 +131,10 @@ export default function Login() {
               <input
                 type="password"
                 placeholder="Introduce tu contraseña"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 className="mt-1 w-full px-4 py-3 rounded-xl border border-gray-300 bg-white text-black
-                  focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                focus:outline-none focus:ring-2 focus:ring-yellow-400"
               />
             </div>
 
