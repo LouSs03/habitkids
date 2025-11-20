@@ -17,45 +17,49 @@ import Register from "./components/Register";
 import ChildDashboard from "./components/ChildDashboard";
 import ParentDashboard from "./components/ParentDashboard";
 
-/* ----- PARENT: hijos ----- */
+/* ----- PARENT COMPONENTS ----- */
 import RegisterChildPage from "./components/RegisterChildPage";
 import ChildRegisterSuccess from "./components/ChildRegisterSuccess";
-
-/* ----- PARENT: rutinas ----- */
+import ParentRoutines from "./components/ParentRoutines";
 import RegisterRoutine from "./components/RegisterRoutine";
-
-/* ----- PARENT: configuración ----- */
 import ParentSettings from "./components/ParentSettings";
+import ParentNavbar from "./components/ParentNavbar";
+
 
 function App() {
   const location = useLocation();
 
-  /* ---------------------------
-     RUTAS DONDE NO VA NAVBAR NI FOOTER
-     --------------------------- */
-  const noLayoutRoutes = [
-    "/login",
-    "/register",
-    "/child/dashboard",
-
-    // padre
+  /* Rutas que usan el NAVBAR del padre */
+  const parentRoutes = [
     "/parent/dashboard",
     "/parent/dashboard/register",
     "/parent/dashboard/register/success",
 
     "/parent/routines",
-    "/parent/settings"
+    "/parent/routines/create",
+
+    "/parent/settings",
   ];
 
-  const hideLayout = noLayoutRoutes.includes(location.pathname);
+  /* Rutas que NO usan ningún navbar (login, register, niño) */
+  const noNavbarRoutes = [
+    "/login",
+    "/register",
+    "/child/dashboard",
+  ];
+
+  const isParentRoute = parentRoutes.includes(location.pathname);
+  const hideNavbar = noNavbarRoutes.includes(location.pathname);
 
   return (
     <>
-      {/* Mostrar navbar SOLO si la ruta lo permite */}
-      {!hideLayout && <Navbar />}
+      {/* NAVBAR: público, padre o ninguno */}
+      {!hideNavbar && !isParentRoute && <Navbar />}
+      {isParentRoute && <ParentNavbar />}
 
       <Routes>
-        {/* -------------------------- HOME -------------------------- */}
+
+        {/* HOME */}
         <Route
           path="/"
           element={
@@ -69,29 +73,31 @@ function App() {
           }
         />
 
-        {/* ------------------- LOGIN | REGISTER ------------------- */}
+        {/* LOGIN | REGISTER */}
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
 
-        {/* ------------------- CHILD DASHBOARD ------------------- */}
+        {/* DASHBOARD NIÑO */}
         <Route path="/child/dashboard" element={<ChildDashboard />} />
 
-        {/* ------------------- PARENT DASHBOARD ------------------- */}
+        {/* PADRE */}
         <Route path="/parent/dashboard" element={<ParentDashboard />} />
 
-        {/* ------------------- REGISTRO DE HIJO ------------------- */}
+        {/* HIJOS */}
         <Route path="/parent/dashboard/register" element={<RegisterChildPage />} />
         <Route path="/parent/dashboard/register/success" element={<ChildRegisterSuccess />} />
 
-        {/* ------------------- RUTINAS DEL PADRE ------------------- */}
-        <Route path="/parent/routines" element={<RegisterRoutine />} />
+        {/* RUTINAS */}
+        <Route path="/parent/routines" element={<ParentRoutines />} />
+        <Route path="/parent/routines/create" element={<RegisterRoutine />} />
 
-        {/* ------------------- CONFIGURACIÓN DEL PADRE ------------ */}
+        {/* CONFIGURACIÓN */}
         <Route path="/parent/settings" element={<ParentSettings />} />
+
       </Routes>
 
-      {/* Mostrar footer SOLO si la ruta lo permite */}
-      {!hideLayout && <Footer />}
+      {/* FOOTER solo en páginas públicas */}
+      {!hideNavbar && !isParentRoute && <Footer />}
     </>
   );
 }

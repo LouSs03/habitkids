@@ -48,7 +48,7 @@ export default function ParentNavbar() {
 
           {/* HIJOS */}
           <button
-            className="flex items-center gap-2 rounded-lg px-3 py-2 font-medium bg-white hover:text-yellow-600"
+            className={`flex items-center gap-2 rounded-lg px-3 py-2 font-medium bg-white hover:text-yellow-600 ${isActive("/parent/children")}`}
           >
             <i className="fa-solid fa-user-group text-lg"></i>
             Hijos
@@ -56,7 +56,7 @@ export default function ParentNavbar() {
 
           {/* NOTIFICACIONES */}
           <button
-            className="flex items-center gap-2 rounded-lg px-3 py-2 font-medium bg-white hover:text-yellow-600"
+            className={`flex items-center gap-2 rounded-lg px-3 py-2 font-medium bg-white hover:text-yellow-600 ${isActive("/parent/notifications")}`}
           >
             <i className="fa-solid fa-bell text-lg"></i>
             Notificación
@@ -64,8 +64,7 @@ export default function ParentNavbar() {
 
           {/* CONFIG */}
           <button
-            className="flex items-center gap-2 rounded-lg px-3 py-2 font-medium bg-white hover:text-yellow-600"
-            onClick={() => navigate("/parent/settings")}
+            className={`flex items-center gap-2 rounded-lg px-3 py-2 font-medium bg-white hover:text-yellow-600 ${isActive("/parent/settings")}`}
           >
             <i className="fa-solid fa-gear text-lg"></i>
             Configuración

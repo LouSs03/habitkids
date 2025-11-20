@@ -18,8 +18,7 @@ export default function ParentSettings() {
 
   return (
     <div className="w-full min-h-screen bg-[#FFFBEF] p-6 flex flex-col items-center">
-      {/* NAVBAR ESTÁNDAR */}
-      <ParentNavbar />
+      
 
       {/* TÍTULO */}
       <h1 className="text-3xl font-bold text-gray-800 mb-10">
