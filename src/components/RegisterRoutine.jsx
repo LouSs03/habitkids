@@ -13,16 +13,16 @@ export default function RegisterRoutine() {
   const [duration, setDuration] = useState("");
 
   const icons = [
-    { id: 0, img: "/iconos-rutina/pincel.png" },
-    { id: 1, img: "/iconos-rutina/libro.png" },
-    { id: 2, img: "/iconos-rutina/cama.png" },
-    { id: 3, img: "/iconos-rutina/mano.png" },
-    { id: 4, img: "/iconos-rutina/planta.png" },
-    { id: 5, img: "/iconos-rutina/comida.png" },
-    { id: 6, img: "/iconos-rutina/hablar.png" },
-    { id: 7, img: "/iconos-rutina/sol.png" },
-    { id: 8, img: "/iconos-rutina/huella.png" },
-    { id: 9, img: "/iconos-rutina/pieza.png" },
+    { id: 0, img: "/pincel.png" },
+    { id: 1, img: "/libro.png" },
+    { id: 2, img: "/cama.png" },
+    { id: 3, img: "/mano.png" },
+    { id: 4, img: "/planta.png" },
+    { id: 5, img: "/comida.png" },
+    { id: 6, img: "/hablar.png" },
+    { id: 7, img: "/sol.png" },
+    { id: 8, img: "/huella.png" },
+    { id: 9, img: "/pieza.png" },
   ];
 
   useEffect(() => {

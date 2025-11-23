@@ -21,7 +21,7 @@ export default function Gamification() {
           {/* IMAGEN */}
           <div className="rounded-3xl overflow-hidden shadow-lg">
             <img
-              src="/src/assets/felicidad.jpg"
+              src="/felicidad.jpg"
               alt="Gamificación"
               className="w-full h-full object-cover"
             />
