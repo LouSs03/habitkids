@@ -1,6 +1,9 @@
+import { useNavigate } from "react-router-dom";
 import imagenFondo from "/nino.jpg";
 
 export default function Hero() {
+  const navigate = useNavigate();
+
   return (
     <section
       className="relative w-full h-[90vh] flex items-center"
@@ -26,15 +29,27 @@ export default function Hero() {
         </p>
 
         <div className="flex gap-6 mt-10">
-          <button className="bg-yellow-400 text-black px-8 py-3 rounded-full font-semibold text-lg shadow hover:bg-yellow-500 transition">
+          {/* BOTÓN REGISTRO PADRE */}
+          <button
+            onClick={() => navigate("/register")}
+            className="bg-yellow-400 text-black px-8 py-3 rounded-full font-semibold text-lg shadow hover:bg-yellow-500 transition"
+          >
             Registrarme
           </button>
 
-          <button className="bg-white text-black px-8 py-3 rounded-full border-2 border-gray-300 font-semibold text-lg hover:bg-gray-100 transition shadow">
+          {/* BOTÓN LOGIN PADRE */}
+          <button
+            onClick={() => navigate("/login")}
+            className="bg-white text-black px-8 py-3 rounded-full border-2 border-gray-300 font-semibold text-lg hover:bg-gray-100 transition shadow"
+          >
             Iniciar sesión
           </button>
 
-          <button className="bg-white text-black px-8 py-3 rounded-full border-2 border-gray-300 font-semibold text-lg hover:bg-gray-100 transition shadow">
+          {/* BOTÓN LOGIN NIÑO */}
+          <button
+            onClick={() => navigate("/child/login")}
+            className="bg-white text-black px-8 py-3 rounded-full border-2 border-gray-300 font-semibold text-lg hover:bg-gray-100 transition shadow"
+          >
             Niño
           </button>
         </div>
