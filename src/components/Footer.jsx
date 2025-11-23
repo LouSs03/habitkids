@@ -13,7 +13,7 @@ export default function Footer() {
                         <div className="flex items-center space-x-3 mb-4">
                             <div className="w-10 h-10 bg-yellow-400 rounded-full flex items-center justify-center overflow-hidden">
                                 <img
-                                    src="/src/assets/caritafeliz.png"
+                                    src="/public/logo.png"
                                     alt="happy face"
                                     className="w-7 h-7 object-contain invert"
                                 />

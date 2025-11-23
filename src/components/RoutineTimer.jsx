@@ -1,17 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import { supabase } from "../lib/supabase";
 
 export default function RoutineTimer() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const task = location.state?.task || {
-    label: "Rutina",
-    icon: "✏️",
-    duration: 3 * 60,
-  };
+  const task = location.state?.task;
+  if (!task) navigate("/child/today");
 
-  const [secondsLeft, setSecondsLeft] = useState(task.duration || 3 * 60);
+  const [secondsLeft, setSecondsLeft] = useState(task.duration);
   const [showEmergency, setShowEmergency] = useState(false);
 
   const formatTime = (total) => {
@@ -22,13 +20,9 @@ export default function RoutineTimer() {
 
   const timeText = secondsLeft > 0 ? formatTime(secondsLeft) : "00:00";
 
-  // ⏱️ Contador: corre siempre mientras haya tiempo
   useEffect(() => {
     if (secondsLeft <= 0) {
-      // cuando termina, envía a la pantalla de felicitaciones
-      navigate("/child/congrats", {
-        state: { completedLabel: task.label },
-      });
+      completeRoutine();
       return;
     }
 
@@ -37,29 +31,36 @@ export default function RoutineTimer() {
     }, 1000);
 
     return () => clearInterval(id);
-  }, [secondsLeft, navigate, task.label]);
+  }, [secondsLeft]);
 
-  // Al pulsar "¡Terminé!" también va a la pantalla de felicitaciones
-  const handleFinish = () => {
+  const completeRoutine = async () => {
+    await supabase
+      .from("routines")
+      .update({
+        status: "completed",
+        completed_at: new Date().toISOString(),
+      })
+      .eq("id", task.id);
+
     navigate("/child/congrats", {
       state: { completedLabel: task.label },
     });
   };
 
-  // ✅ “Sí, pausar” → salir al Caminito sin completar la tarea
-  const handleEmergencyYes = () => {
-    navigate("/child/today");
-  };
-
-  // ❌ “No” → solo cerrar el modal
-  const handleEmergencyNo = () => {
-    setShowEmergency(false);
-  };
-
   return (
     <div className="w-full min-h-screen bg-white flex flex-col items-center justify-center relative">
 
-      {/* Botón EMERGENCIA (arriba derecha) */}
+      {/* ← BOTÓN REGRESAR */}
+      <button
+        onClick={() => navigate("/child/today")}
+
+        className="absolute left-6 top-6 w-12 h-12 bg-yellow-400 hover:bg-yellow-500
+          rounded-full shadow flex items-center justify-center transition"
+      >
+        <span className="text-2xl font-bold">←</span>
+      </button>
+
+      {/* BOTÓN EMERGENCIA */}
       <button
         onClick={() => setShowEmergency(true)}
         className="absolute right-6 top-6 px-5 py-2 rounded-full 
@@ -68,33 +69,28 @@ export default function RoutineTimer() {
         ¡Emergencia!
       </button>
 
-      {/* CÍRCULO CON CRONÓMETRO */}
+      {/* TIMER */}
       <div className="relative w-56 h-56 flex items-center justify-center mb-6">
         <div className="absolute inset-0 rounded-full border-[12px] border-yellow-400" />
-
         <div className="relative flex flex-col items-center justify-center w-full h-full">
-          <div className="text-4xl mb-2">{task.icon}</div>
+          <img src={task.icon} className="w-14 h-14 mb-2 object-contain" />
           <div className="text-5xl font-extrabold tracking-wide text-black">
             {timeText}
           </div>
         </div>
       </div>
 
-      {/* Mensaje motivacional */}
-      <p className="text-sm text-gray-700 mb-4">
-        ¡Tú puedes! {task.label && `(${task.label})`}
-      </p>
+      <p className="text-sm text-gray-700 mb-4">¡Tú puedes! ({task.label})</p>
 
-      {/* Botón TERMINÉ */}
       <button
-        onClick={handleFinish}
+        onClick={completeRoutine}
         className="mt-2 px-8 py-2 rounded-full bg-[#7195FF] text-white font-semibold shadow-md
-          hover:bg-[#567dff] transition"
+            hover:bg-[#567dff] transition"
       >
         ¡Terminé!
       </button>
 
-      {/* MODAL DE EMERGENCIA SOBRE EL TIMER */}
+      {/* EMERGENCY POPUP */}
       {showEmergency && (
         <div className="fixed inset-0 bg-[#E5E7F5]/60 backdrop-blur-sm flex items-center justify-center z-20">
           <div className="bg-white rounded-2xl shadow-xl px-8 py-6 w-[280px] text-center">
@@ -103,7 +99,7 @@ export default function RoutineTimer() {
             </p>
 
             <button
-              onClick={handleEmergencyYes}
+              onClick={() => navigate("/child/today")}
               className="w-full py-2 mb-3 rounded-full bg-red-500 border border-red-300
                 hover:bg-red-600 text-white text-sm font-semibold"
             >
@@ -111,7 +107,7 @@ export default function RoutineTimer() {
             </button>
 
             <button
-              onClick={handleEmergencyNo}
+              onClick={() => setShowEmergency(false)}
               className="w-full py-2 rounded-full bg-gray-100 hover:bg-gray-200 
                 text-gray-700 text-sm"
             >

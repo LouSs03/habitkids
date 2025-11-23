@@ -1,11 +1,16 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import ParentNavbar from "./ParentNavbar";
-
+import { supabase } from "../lib/supabase";
 
 export default function RegisterRoutine() {
   const navigate = useNavigate();
+
   const [selectedIcon, setSelectedIcon] = useState(0);
+  const [children, setChildren] = useState([]);
+  const [title, setTitle] = useState("");
+  const [childId, setChildId] = useState("");
+  const [startTime, setStartTime] = useState("");
+  const [duration, setDuration] = useState("");
 
   const icons = [
     { id: 0, img: "/src/assets/iconos-rutina/pincel.png" },
@@ -20,40 +25,87 @@ export default function RegisterRoutine() {
     { id: 9, img: "/src/assets/iconos-rutina/pieza.png" },
   ];
 
+  useEffect(() => {
+    const loadChildren = async () => {
+      const parentAuth = (await supabase.auth.getUser()).data.user;
+      if (!parentAuth) return;
+
+      const { data } = await supabase
+        .from("profiles")
+        .select("*")
+        .eq("parent_id", parentAuth.id)
+        .order("name", { ascending: true });
+
+      setChildren(data || []);
+    };
+
+    loadChildren();
+  }, []);
+
+  const handleSaveRoutine = async () => {
+    if (!title || !childId || !startTime || !duration) {
+      alert("Completa todos los campos.");
+      return;
+    }
+
+    // ⭐ Hora estable y limpia: HH:MM:SS
+    const cleanTime = startTime.length === 5 
+      ? `${startTime}:00` 
+      : startTime.slice(0, 8);
+
+    const today = new Date().toISOString().slice(0, 10);
+
+    // Insertamos la rutina sin tocar nada de tu diseño
+    const { error } = await supabase.from("routines").insert({
+      child_id: childId,
+      title,
+      icon: icons[selectedIcon].img,
+      start_time: cleanTime,
+      duration: Number(duration),
+      status: "pending",
+      date: today,
+    });
+
+    if (error) {
+      console.error(error);
+      alert("Error al guardar rutina.");
+      return;
+    }
+
+    navigate("/parent/routines");
+  };
+
   return (
     <div className="min-h-screen bg-[#FFFBEF]">
-
-      {/* NAVBAR ESTÁNDAR */}
-      <ParentNavbar />
-
-      {/* 🔸 CONTENIDO PRINCIPAL */}
       <div className="flex flex-col items-center py-12 px-4">
-
         <h1 className="text-3xl font-bold text-gray-800 mb-10">
           Registrar Nueva Rutina
         </h1>
 
-        {/* CARD */}
         <div className="bg-white w-full max-w-3xl rounded-3xl shadow-lg p-10 border border-gray-200">
-
-          {/* Nombre */}
           <label className="font-medium text-gray-700">Nombre de la Rutina</label>
           <input
             type="text"
             placeholder="Ej. Lavarse los dientes"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
             className="w-full mt-2 mb-6 px-4 py-3 rounded-xl bg-gray-100 text-gray-700"
           />
 
-          {/* Asignar Niño */}
           <label className="font-medium text-gray-700">Asignar a Niño(a)</label>
-          <select className="w-full mt-2 mb-6 px-4 py-3 rounded-xl bg-gray-100 text-gray-700">
-            <option>Seleccionar niño(a)</option>
-            <option>Sara</option>
-            <option>Leo</option>
-            <option>Mia</option>
+          <select
+            value={childId}
+            onChange={(e) => setChildId(e.target.value)}
+            className="w-full mt-2 mb-6 px-4 py-3 rounded-xl bg-gray-100 text-gray-700"
+          >
+            <option value="">Seleccionar niño(a)</option>
+            {children.map((c) => (
+              <option key={c.id} value={c.id}>
+                {c.name}
+              </option>
+            ))}
           </select>
 
-          {/* Tiempo */}
           <p className="font-medium text-gray-700 mb-2">Configuración de Tiempo</p>
 
           <div className="grid grid-cols-2 gap-4 mb-6">
@@ -61,6 +113,8 @@ export default function RegisterRoutine() {
               <label className="text-sm text-gray-600">Hora de Inicio</label>
               <input
                 type="time"
+                value={startTime}
+                onChange={(e) => setStartTime(e.target.value)}
                 className="w-full mt-1 px-4 py-3 rounded-xl bg-gray-100 text-gray-700"
               />
             </div>
@@ -69,13 +123,14 @@ export default function RegisterRoutine() {
               <label className="text-sm text-gray-600">Duración (minutos)</label>
               <input
                 type="number"
+                value={duration}
+                onChange={(e) => setDuration(e.target.value)}
                 placeholder="15"
                 className="w-full mt-1 px-4 py-3 rounded-xl bg-gray-100 text-gray-700"
               />
             </div>
           </div>
 
-          {/* Íconos */}
           <p className="font-medium text-gray-700 mb-3">Ícono / Categoría</p>
 
           <div className="grid grid-cols-5 gap-4 mb-8">
@@ -84,9 +139,10 @@ export default function RegisterRoutine() {
                 key={icon.id}
                 onClick={() => setSelectedIcon(icon.id)}
                 className={`w-16 h-16 flex items-center justify-center rounded-xl border transition
-                  ${selectedIcon === icon.id
-                    ? "bg-yellow-200 border-yellow-400 shadow"
-                    : "bg-white border-gray-300 hover:bg-gray-100"
+                  ${
+                    selectedIcon === icon.id
+                      ? "bg-yellow-200 border-yellow-400 shadow"
+                      : "bg-white border-gray-300 hover:bg-gray-100"
                   }
                 `}
               >
@@ -95,23 +151,12 @@ export default function RegisterRoutine() {
             ))}
           </div>
 
-          {/* Alarma */}
-          <div className="flex items-center justify-between mb-6">
-            <span className="font-medium text-gray-700">Activar Alarma</span>
-            <label className="relative inline-flex items-center cursor-pointer">
-              <input type="checkbox" className="sr-only peer" />
-              <div className="w-11 h-6 bg-gray-300 rounded-full peer peer-checked:bg-yellow-400 transition"></div>
-              <span className="absolute left-1 top-1 w-4 h-4 bg-white rounded-full peer-checked:translate-x-5 transition"></span>
-            </label>
-          </div>
-
-          {/* Botón Guardar */}
           <button
+            onClick={handleSaveRoutine}
             className="w-full bg-yellow-400 text-black font-semibold py-3 rounded-full hover:bg-yellow-500 shadow transition"
           >
             Guardar Rutina
           </button>
-
         </div>
       </div>
     </div>

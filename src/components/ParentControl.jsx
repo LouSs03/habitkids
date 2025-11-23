@@ -1,6 +1,10 @@
 import React from 'react';
+import { useNavigate } from "react-router-dom";
 
 export default function ParentControl() {
+
+    const navigate = useNavigate();
+
     return (
         <section className="py-20 bg-white">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -18,11 +22,13 @@ export default function ParentControl() {
                             Panel de Control Intuitivo
                         </h3>
                         <p className="text-gray-600 mb-6">
-                            Como padre, tendrás acceso a un panel completo desde el cual podrás personalizar tareas, asignar recompensas, y ver el progreso de tus hijos en tiempo real. Todo desde una interfaz fácil de usar y adaptada a tus necesidades y prioridades.
+                            Como padre, tendrás acceso a un panel completo desde el cual podrás personalizar tareas,
+                            asignar recompensas, y ver el progreso de tus hijos en tiempo real. Todo desde una interfaz
+                            fácil de usar y adaptada a tus necesidades y prioridades.
                         </p>
+
                         {/* LISTA DE BENEFICIOS */}
                         <ul className="space-y-4 mt-4">
-
                             <li className="flex items-center gap-3 text-gray-700">
                                 <span className="text-indigo-500 text-xl">🗓️</span>
                                 <span>Establece horarios y rutinas</span>
@@ -37,16 +43,19 @@ export default function ParentControl() {
                                 <span className="text-indigo-500 text-xl">📘</span>
                                 <span>Accede a recursos educativos</span>
                             </li>
-
                         </ul>
 
-                        {/* BOTÓN */}
-                        <button className="mt-8 flex items-center gap-2 bg-white border border-gray-300 px-6 py-3 rounded-xl font-medium text-gray-800 shadow-sm hover:bg-gray-100 transition">
+                        {/* BOTÓN CON NAVEGACIÓN */}
+                        <button
+                            className="mt-8 flex items-center gap-2 bg-white border border-gray-300 px-6 py-3 rounded-xl font-medium text-gray-800 shadow-sm hover:bg-gray-100 transition"
+                            onClick={() => navigate("/register")}
+                        >
                             <span className="text-lg">↗</span>
                             Explorar como Padre
                         </button>
 
                     </div>
+
                     <div className="bg-gradient-to-br from-yellow-200 to-orange-200 rounded-3xl p-8 shadow-2xl">
                         <img
                             src="/src/assets/padre-hijo.avif"

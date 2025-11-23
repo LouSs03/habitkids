@@ -19,10 +19,10 @@ export default function ParentNavbar() {
           onClick={() => navigate("/parent/dashboard")}
         >
           <div className="w-10 h-10 bg-yellow-400 rounded-lg flex items-center justify-center shadow">
-            <img src="/src/assets/caritafeliz.png" alt="logo" className="w-7 invert" />
+            <img src="/logo.png" alt="logo" className="w-7 invert" />
           </div>
 
-          <span className="text-xl font-bold text-yellow-600">Habit Kids</span>
+          <span className="text-xl font-bold text-yellow-600">HabitKids</span>
         </div>
 
         {/* MENÚ */}

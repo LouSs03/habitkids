@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { supabase } from "../lib/supabase";
 
 export default function Login() {
   const navigate = useNavigate();
-  const [tipo, setTipo] = useState("padre"); 
+  const [tipo, setTipo] = useState("padre");
   const [emailOrName, setEmailOrName] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
 
     if (!emailOrName || !password) {
@@ -16,13 +17,42 @@ export default function Login() {
     }
 
     if (tipo === "padre") {
-      // Guardar nombre del padre para mostrarlo en el dashboard
-      localStorage.setItem("parentName", emailOrName);
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email: emailOrName,
+        password,
+      });
+
+      if (error) {
+        alert("Credenciales incorrectas.");
+        return;
+      }
 
       navigate("/parent/dashboard");
-    } else {
-      // login del niño
-      localStorage.setItem("childName", emailOrName);
+      return;
+    }
+
+    if (tipo === "niño") {
+      const { data: child, error } = await supabase
+        .from("profiles")
+        .select("*")
+        .eq("username", emailOrName)
+        .eq("password", password)
+        .eq("role", "child")
+        .single();
+
+      if (error || !child) {
+        alert("Usuario o contraseña incorrectos.");
+        return;
+      }
+
+      localStorage.setItem(
+        "child_session",
+        JSON.stringify({
+          id: child.id,
+          name: child.name,
+          avatar: child.avatar,
+        })
+      );
 
       navigate("/child/dashboard");
     }
@@ -30,8 +60,6 @@ export default function Login() {
 
   return (
     <div className="relative min-h-screen bg-gray-100 px-4">
-
-      {/* BOTÓN VOLVER — Mejorado */}
       <button
         onClick={() => navigate("/")}
         className="absolute z-50 top-8 left-6 flex items-center gap-2 bg-white text-gray-700 
@@ -41,14 +69,11 @@ export default function Login() {
         <span className="text-sm font-medium">Volver</span>
       </button>
 
-      {/* CONTENEDOR CENTRAL */}
       <div className="flex flex-col items-center justify-center py-16">
-
-        {/* LOGO */}
         <div className="flex items-center gap-2 mb-8 mt-6">
           <div className="w-12 h-12 bg-yellow-400 rounded-full flex items-center justify-center overflow-hidden">
             <img
-              src="/src/assets/caritafeliz.png"
+              src="/logo.png"
               alt="happy face"
               className="w-7 h-7 object-contain invert"
             />
@@ -58,7 +83,6 @@ export default function Login() {
           </span>
         </div>
 
-        {/* SWITCH PADRE / NIÑO */}
         <div className="bg-white shadow-md rounded-full flex p-1 mb-6">
           <button
             onClick={() => setTipo("padre")}
@@ -83,26 +107,18 @@ export default function Login() {
           </button>
         </div>
 
-        {/* CARD DE LOGIN */}
         <div className="bg-white w-full max-w-md rounded-2xl shadow-lg p-8 text-center">
-
-          {/* Títulos */}
           <h2 className="text-2xl font-bold text-gray-900 mb-1">
-            {tipo === "padre"
-              ? "¡Bienvenido de nuevo, Padre!"
-              : "¡Bienvenido de nuevo, Niño!"}
+            {tipo === "padre" ? "¡Bienvenido, Padre!" : "¡Bienvenido, Niño!"}
           </h2>
 
           <p className="text-gray-600 text-sm mb-6">
             {tipo === "padre"
               ? "Accede para gestionar hábitos y recompensas"
-              : "Ingresa a tus misiones y aventuras divertidas ⭐"}
+              : "Ingresa con tu usuario y contraseña"}
           </p>
 
-          {/* FORMULARIO */}
           <form className="mt-4 space-y-5" onSubmit={handleLogin}>
-
-            {/* EMAIL / NOMBRE */}
             <div className="text-left">
               <label className="text-sm font-medium text-gray-700">
                 {tipo === "padre" ? "Correo Electrónico" : "Nombre de Usuario"}
@@ -113,7 +129,7 @@ export default function Login() {
                 placeholder={
                   tipo === "padre"
                     ? "Introduce tu correo electrónico"
-                    : "Introduce tu nombre"
+                    : "Ingresa tu usuario"
                 }
                 value={emailOrName}
                 onChange={(e) => setEmailOrName(e.target.value)}
@@ -122,7 +138,6 @@ export default function Login() {
               />
             </div>
 
-            {/* CONTRASEÑA */}
             <div className="text-left">
               <label className="text-sm font-medium text-gray-700">
                 Contraseña
@@ -138,26 +153,14 @@ export default function Login() {
               />
             </div>
 
-            {/* BOTÓN */}
             <button
               type="submit"
               className="w-full bg-yellow-400 text-black font-semibold py-3 rounded-xl hover:bg-yellow-500 transition"
             >
-              {tipo === "padre" ? "Iniciar Sesión" : "Entrar a mi Cuenta"}
+              {tipo === "padre" ? "Iniciar Sesión" : "Entrar"}
             </button>
           </form>
-
-          {/* LINK EXTRA */}
-          <button
-            className="mt-4 text-sm text-gray-600 hover:text-gray-800"
-          >
-            {tipo === "padre"
-              ? "¿Olvidaste tu contraseña?"
-              : "¿Necesitas ayuda?"}
-          </button>
-
         </div>
-
       </div>
     </div>
   );

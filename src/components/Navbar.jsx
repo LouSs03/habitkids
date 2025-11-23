@@ -7,7 +7,7 @@ export default function Navbar() {
                 <div className="flex items-center gap-3">
                     <div className="w-12 h-12 bg-yellow-400 rounded-full flex items-center justify-center overflow-hidden">
                         <img
-                            src="/src/assets/caritafeliz.png"
+                            src="/logo.png"
                             alt="happy face"
                             className="w-7 h-7 object-contain invert"
                         />
