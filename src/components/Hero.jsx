@@ -1,4 +1,4 @@
-import imagenFondo from "../assets/nino.jpg";
+import imagenFondo from "/nino.jpg";
 
 export default function Hero() {
   return (
