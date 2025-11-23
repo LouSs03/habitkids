@@ -13,16 +13,16 @@ export default function RegisterRoutine() {
   const [duration, setDuration] = useState("");
 
   const icons = [
-    { id: 0, img: "/src/assets/iconos-rutina/pincel.png" },
-    { id: 1, img: "/src/assets/iconos-rutina/libro.png" },
-    { id: 2, img: "/src/assets/iconos-rutina/cama.png" },
-    { id: 3, img: "/src/assets/iconos-rutina/mano.png" },
-    { id: 4, img: "/src/assets/iconos-rutina/planta.png" },
-    { id: 5, img: "/src/assets/iconos-rutina/comida.png" },
-    { id: 6, img: "/src/assets/iconos-rutina/hablar.png" },
-    { id: 7, img: "/src/assets/iconos-rutina/sol.png" },
-    { id: 8, img: "/src/assets/iconos-rutina/huella.png" },
-    { id: 9, img: "/src/assets/iconos-rutina/pieza.png" },
+    { id: 0, img: "/iconos-rutina/pincel.png" },
+    { id: 1, img: "/iconos-rutina/libro.png" },
+    { id: 2, img: "/iconos-rutina/cama.png" },
+    { id: 3, img: "/iconos-rutina/mano.png" },
+    { id: 4, img: "/iconos-rutina/planta.png" },
+    { id: 5, img: "/iconos-rutina/comida.png" },
+    { id: 6, img: "/iconos-rutina/hablar.png" },
+    { id: 7, img: "/iconos-rutina/sol.png" },
+    { id: 8, img: "/iconos-rutina/huella.png" },
+    { id: 9, img: "/iconos-rutina/pieza.png" },
   ];
 
   useEffect(() => {

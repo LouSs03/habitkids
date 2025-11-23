@@ -154,7 +154,7 @@ export default function Register() {
         </div>
 
         <div className="bg-yellow-300 flex justify-center items-center p-10 relative min-h-[350px] lg:min-h-full w-full h-full">
-          <img src="/src/assets/coheteee.webp"
+          <img src="/assets/coheteee.webp"
             className="w-full max-w-[420px] object-contain drop-shadow-lg" />
         </div>
       </div>

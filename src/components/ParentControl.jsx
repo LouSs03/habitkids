@@ -58,7 +58,7 @@ export default function ParentControl() {
 
                     <div className="bg-gradient-to-br from-yellow-200 to-orange-200 rounded-3xl p-8 shadow-2xl">
                         <img
-                            src="/src/assets/padre-hijo.avif"
+                            src="/assets/padre-hijo.avif"
                             alt="Control parental"
                             className="rounded-2xl w-full h-80 object-cover"
                         />

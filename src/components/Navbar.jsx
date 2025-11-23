@@ -14,7 +14,7 @@ export default function Navbar() {
                     </div>
 
                     <span className="text-2xl font-bold" style={{ color: "#FACC15" }}>
-                        Habit Kids
+                        HabitKids
                     </span>
                 </div>
 
