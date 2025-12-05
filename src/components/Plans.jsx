@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 export default function Plans() {
   return (
     <section className="py-20 bg-[#FFFBEF] text-gray-800">
@@ -24,15 +26,20 @@ export default function Plans() {
               <li>✔ Seguimiento básico</li>
             </ul>
 
-            <button className="mt-8 bg-yellow-400 px-6 py-3 rounded-full w-full font-semibold hover:bg-yellow-500">
+            <Link
+              to="/register"
+              className="mt-8 block bg-yellow-400 px-6 py-3 rounded-full w-full font-semibold hover:bg-yellow-500 transition text-center"
+            >
               Empezar gratis
-            </button>
+            </Link>
           </div>
 
-          {/* PLAN ESTÁNDAR */}
+          {/* PLAN FAMILIAR */}
           <div className="bg-white border-2 border-yellow-400 rounded-3xl p-8 shadow-xl text-center scale-[1.05]">
             <h3 className="text-2xl font-bold mb-4">Familiar</h3>
-            <p className="text-4xl font-bold mb-6">S/ 15<span className="text-lg">/mes</span></p>
+            <p className="text-4xl font-bold mb-6">
+              S/ 15<span className="text-lg">/mes</span>
+            </p>
 
             <ul className="space-y-3 text-gray-700">
               <li>✔ Hasta 3 niños</li>
@@ -41,15 +48,20 @@ export default function Plans() {
               <li>✔ Avatares + Logros</li>
             </ul>
 
-            <button className="mt-8 bg-yellow-400 px-6 py-3 rounded-full w-full font-semibold hover:bg-yellow-500">
+            <Link
+              to="/register"
+              className="mt-8 block bg-yellow-400 px-6 py-3 rounded-full w-full font-semibold hover:bg-yellow-500 transition text-center"
+            >
               Elegir plan
-            </button>
+            </Link>
           </div>
 
           {/* PLAN PREMIUM */}
           <div className="bg-white border border-gray-200 rounded-3xl p-8 shadow text-center">
             <h3 className="text-2xl font-bold mb-4">Premium</h3>
-            <p className="text-4xl font-bold mb-6">S/ 25<span className="text-lg">/mes</span></p>
+            <p className="text-4xl font-bold mb-6">
+              S/ 25<span className="text-lg">/mes</span>
+            </p>
 
             <ul className="space-y-3 text-gray-700">
               <li>✔ Niños ilimitados</li>
@@ -58,9 +70,12 @@ export default function Plans() {
               <li>✔ Soporte prioritario</li>
             </ul>
 
-            <button className="mt-8 bg-yellow-400 px-6 py-3 rounded-full w-full font-semibold hover:bg-yellow-500">
+            <Link
+              to="/register"
+              className="mt-8 block bg-yellow-400 px-6 py-3 rounded-full w-full font-semibold hover:bg-yellow-500 transition text-center"
+            >
               Seleccionar
-            </button>
+            </Link>
           </div>
 
         </div>
