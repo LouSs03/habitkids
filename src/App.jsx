@@ -9,9 +9,12 @@ import HowItWorks from "./components/HowItWorks";
 import Benefits from "./components/Benefits";
 import Gamification from "./components/Gamification";
 import ParentControl from "./components/ParentControl";
+import PromoVideo from "./components/PromoVideo";
 
 import Login from "./components/Login";
 import Register from "./components/Register";
+import Plans from "./components/Plans";
+
 
 /* ----- DASHBOARDS ----- */
 import ChildDashboard from "./components/ChildDashboard";
@@ -77,7 +80,9 @@ function App() {
             <>
               <Hero />
               <HowItWorks />
+              <PromoVideo />
               <Benefits />
+              <Plans />
               <Gamification />
               <ParentControl />
             </>
