@@ -3,15 +3,24 @@ export default function PromoVideo() {
     <section className="py-20 bg-white">
       <div className="max-w-3xl mx-auto px-5 text-center">
 
-        <h2 className="text-4xl font-bold mb-6">
+        <h2 className="text-4xl font-bold mb-10">
           Mira cómo funciona HabitKids
         </h2>
 
+        {/* Contenedor centrado */}
         <div className="flex justify-center">
           <video
             src="/video.mp4"
             controls
-            className="w-[70%] md:w-[60%] lg:w-[50%] rounded-3xl shadow-xl"
+            className="
+              w-[350px] 
+              sm:w-[380px] 
+              md:w-[420px] 
+              lg:w-[450px]
+              rounded-3xl 
+              shadow-2xl 
+              border
+            "
           />
         </div>
 
